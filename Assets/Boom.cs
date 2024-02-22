@@ -14,7 +14,7 @@ public class Boom : MonoBehaviour
         Debug.Log($"{_coldownTime - _curentTime}");
         if(_curentTime >= _coldownTime)
         {
-            Boooom();
+            Boooom2();
             _curentTime -= _coldownTime;
         }
     }
@@ -32,4 +32,19 @@ public class Boom : MonoBehaviour
             }
         }
     }
+    private void Boooom2()
+    {
+        Enemy[] enemys = FindObjectsOfType<Enemy>();
+        foreach (Enemy enemy in enemys)
+        {
+            float distance = Vector3.Distance(transform.position, enemy.transform.position);
+            if (distance <= _radius)
+            {
+                Vector3 direction = enemy.transform.position - transform.position;
+                enemy.TakeDamage(direction * _power * (_radius - distance), Vector3.up);
+                //box.AddForce(direction.normalized * _power * (_radius - distance), ForceMode.Impulse);
+            }
+        }
+    }
+
 }
