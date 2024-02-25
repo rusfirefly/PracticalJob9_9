@@ -11,5 +11,10 @@ public class InputHandlerExample : MonoBehaviour
         {
             _enemy.Kill();
         }
+
+        if (Input.GetKeyUp(KeyCode.A))
+        {
+            _enemy.StandUP();
+        }
     }
 }

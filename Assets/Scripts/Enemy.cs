@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
 
     private void Awake()
     {
-        _enemyView.Initialized();
+        _enemyView.Initialized(transform);
         _ragdollHandler.Initialized();
         StartRun();
     }
@@ -18,6 +18,13 @@ public class Enemy : MonoBehaviour
     {
         _enemyView.DisableAnimator();
         _ragdollHandler.Enable();
+    }
+
+    public void StandUP()
+    {
+        _enemyView.EnableAnimator();
+        _ragdollHandler.Disable();
+        _enemyView.NewPositionParent();
     }
 
     public void StartRun()
