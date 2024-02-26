@@ -7,7 +7,7 @@ public class InputHandlerExample : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyUp(KeyCode.F))
+        /*if(Input.GetKeyUp(KeyCode.F))
         {
             _enemy.Kill();
         }
@@ -16,5 +16,7 @@ public class InputHandlerExample : MonoBehaviour
         {
             _enemy.StandUP();
         }
+        */
+
     }
 }

@@ -14,8 +14,19 @@ public class Enemy : MonoBehaviour
         StartRun();
     }
 
+    private void OnEnable()
+    {
+        EnemyView.StandUp += OnStandUp;
+    }
+
+    private void OnDisable()
+    {
+        EnemyView.StandUp -= OnStandUp;
+    }
+
     public void Kill()
     {
+        StopRun();
         _enemyView.DisableAnimator();
         _ragdollHandler.Enable();
     }
@@ -25,6 +36,7 @@ public class Enemy : MonoBehaviour
         _enemyView.EnableAnimator();
         _ragdollHandler.Disable();
         _enemyView.NewPositionParent();
+        _enemyView.StartStandUpAnimation();
     }
 
     public void StartRun()
@@ -46,5 +58,10 @@ public class Enemy : MonoBehaviour
         _ragdollHandler.Enable();
 
         _ragdollHandler.Hit(force, hitPosition);
+    }
+
+    private void OnStandUp()
+    {
+        StartRun();
     }
 }

@@ -2,7 +2,9 @@ using UnityEngine;
 
 public class Mover : MonoBehaviour
 {
-    [SerializeField, Range(0,20)] private float _speed;
+    [SerializeField, Range(0, 20)] private float _speed;
+    
+    private Point _point;
     private bool _isRun;
 
     private Vector3 _direction;
@@ -10,12 +12,20 @@ public class Mover : MonoBehaviour
     private void Awake()
     {
         _direction = Vector3.forward;
+        _point = new Point(-10, 10);
+        transform.LookAt(_point.GetPoint);
     }
 
     private void Update()
     {
         if (_isRun == false)
             return;
+
+        if (_point.CheckDistance(transform.position))
+        {
+            _point.NewPoint();
+            transform.LookAt(_point.GetPoint);
+        }
 
         transform.Translate(_direction * _speed * Time.deltaTime);
     }

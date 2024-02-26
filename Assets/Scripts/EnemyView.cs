@@ -1,18 +1,24 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 public class EnemyView : MonoBehaviour
 {
+    public static event Action StandUp;
+    
     private Animator _animator;
     private const string _isRuningKey= "IsRuning";
     private Transform _parent;
     private Transform _hipsBone;
+    private Vector3 _hipsBoneDefaultPosition;
+
 
     public void Initialized(Transform parent)
     {
         _animator = GetComponent<Animator>();
         _parent = parent;
         _hipsBone = _animator.GetBoneTransform(HumanBodyBones.Hips);
+        _hipsBoneDefaultPosition = _hipsBone.position;
     }
 
     public void EnableAnimator() => _animator.enabled = true;
@@ -27,10 +33,9 @@ public class EnemyView : MonoBehaviour
     public void NewPositionParent()
     {
         _parent.position = _hipsBone.position;
-
         Ratation();
-
-        //return _parent.position;
+        CheckParentGround();
+        _hipsBone.position = _hipsBoneDefaultPosition;
     }
 
     private void Ratation()
@@ -38,7 +43,11 @@ public class EnemyView : MonoBehaviour
         Vector3 hipsPosition = _hipsBone.position;
         Quaternion hipsRotation = _hipsBone.rotation;
 
-        Vector3 directionForRotate = -_hipsBone.up;
+        Vector3 directionForRotate = _hipsBone.up;
+
+        if (IsFrontUp == true)
+            directionForRotate *= -1;
+
         directionForRotate.y = 0;
 
         Quaternion correctionRotation = Quaternion.FromToRotation(_parent.forward, directionForRotate.normalized);
@@ -46,7 +55,31 @@ public class EnemyView : MonoBehaviour
 
         _hipsBone.position = hipsPosition;
         _hipsBone.rotation = hipsRotation;
-
     }
 
+    public void StandUpEvent() => StandUp?.Invoke();
+
+    public void StartStandUpAnimation()
+    {
+        if (IsFrontUp)
+        {
+            _animator.Play("BackStandUp", -1, 0f);
+        }
+        else
+        {
+            _animator.Play("FrontStandUp", -1, 0f);
+        }
+    }
+
+    private bool IsFrontUp => Vector3.Dot(_hipsBone.forward, Vector3.up) > 0;
+
+    private void CheckParentGround()
+    {
+        bool isGround = Physics.Raycast(_parent.position, Vector3.down, out RaycastHit hit, 10f, 1 << LayerMask.NameToLayer("Ground"));
+            
+        if (isGround)
+        {
+           _parent.position = new Vector3(_parent.position.x, hit.point.y, _parent.position.z);
+        }
+    }
 }
