@@ -6,6 +6,9 @@ public class Enemy : MonoBehaviour
     [SerializeField] private EnemyView _enemyView;
     [SerializeField] private RagdollHandler _ragdollHandler;
     [SerializeField] private Mover _mover;
+    private bool _isDie;
+    private float _currentTime;
+    private float _timeStartStandUp = 3f;
 
     private void Awake()
     {
@@ -14,14 +17,28 @@ public class Enemy : MonoBehaviour
         StartRun();
     }
 
+    private void Update()
+    {
+        if(_isDie)
+        {
+            _currentTime += Time.deltaTime;
+            if (_currentTime >= _timeStartStandUp)
+            {
+                StandUP();
+                _currentTime -= _timeStartStandUp;
+                _isDie = false;
+            }
+        }
+    }
+
     private void OnEnable()
     {
-        EnemyView.StandUp += OnStandUp;
+        _enemyView.StandUp += OnStandUp;
     }
 
     private void OnDisable()
     {
-        EnemyView.StandUp -= OnStandUp;
+        _enemyView.StandUp -= OnStandUp;
     }
 
     public void Kill()
@@ -29,6 +46,8 @@ public class Enemy : MonoBehaviour
         StopRun();
         _enemyView.DisableAnimator();
         _ragdollHandler.Enable();
+        _isDie = true;
+        _currentTime = 0;
     }
 
     public void StandUP()
@@ -58,10 +77,14 @@ public class Enemy : MonoBehaviour
         _ragdollHandler.Enable();
 
         _ragdollHandler.Hit(force, hitPosition);
+        _isDie = true;
+        _currentTime = 0;
     }
 
     private void OnStandUp()
     {
         StartRun();
     }
+
+    
 }

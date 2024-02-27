@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class EnemyView : MonoBehaviour
 {
-    public static event Action StandUp;
+    public event Action StandUp;
     
     private Animator _animator;
     private const string _isRuningKey= "IsRuning";

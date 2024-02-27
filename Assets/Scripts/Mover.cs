@@ -21,6 +21,8 @@ public class Mover : MonoBehaviour
         if (_isRun == false)
             return;
 
+        transform.LookAt(_point.GetPoint);
+
         if (_point.CheckDistance(transform.position))
         {
             _point.NewPoint();
@@ -31,6 +33,7 @@ public class Mover : MonoBehaviour
     }
 
     public void Enable() => _isRun = true;
+
     public void Disable() => _isRun = false;
 
 }

@@ -3,20 +3,13 @@ using UnityEngine;
 
 public class InputHandlerExample : MonoBehaviour
 {
-    [SerializeField] private Enemy _enemy;
+    [SerializeField] private Character _player;
 
     private void Update()
     {
-        /*if(Input.GetKeyUp(KeyCode.F))
+        if (Input.GetMouseButtonUp(0))
         {
-            _enemy.Kill();
+            _player.Attack();
         }
-
-        if (Input.GetKeyUp(KeyCode.A))
-        {
-            _enemy.StandUP();
-        }
-        */
-
     }
 }
