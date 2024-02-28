@@ -4,53 +4,63 @@ using UnityEngine;
 public class CharacterMover : MonoBehaviour
 {
     [SerializeField] private Character _character;
+    [SerializeField] private float velocity;
+    [SerializeField] private bool blockRotationPlayer;
 
-    public float Velocity;
-    [Space]
-
-    public float InputX;
-    public float InputZ;
-    public Vector3 desiredMoveDirection;
-    public bool blockRotationPlayer;
-    public float desiredRotationSpeed = 0.1f;
-    public float Speed;
-    public float allowPlayerRotation = 0.1f;
-    public CharacterController controller;
-    public bool isGrounded;
+    private float _inputX;
+    private float _inputZ;
+    private Vector3 _desiredMoveDirection;
+    private float _desiredRotationSpeed = 0.1f;
+    private float _speed;
+    private float _allowPlayerRotation = 0.1f;
+    private CharacterController _controller;
+    private bool _isGrounded;
     private Camera _camera;
-    public float verticalVel;
+    private float _verticalVelocity;
     private Vector3 moveVector;
+    private bool _isMove;
 
-    void Start()
+    private void Start()
     {
         _camera = Camera.main;
-        controller = this.GetComponent<CharacterController>();
+        _controller = this.GetComponent<CharacterController>();
         _character = GetComponent<Character>();
+        _isMove = true;
     }
 
-    void Update()
+    private void Update()
     {
+        if (_isMove == false) return;
         InputMagnitude();
 
-        isGrounded = controller.isGrounded;
-        if (isGrounded)
+        _isGrounded = _controller.isGrounded;
+        if (_isGrounded)
         {
-            verticalVel -= 0;
+            _verticalVelocity -= 0;
         }
         else
         {
-            verticalVel -= 1;
+            _verticalVelocity -= 1;
         }
-        moveVector = new Vector3(0, verticalVel * .2f * Time.deltaTime, 0);
-        controller.Move(moveVector);
+        moveVector = new Vector3(0, _verticalVelocity * .2f * Time.deltaTime, 0);
 
-
+        _controller.Move(moveVector);
     }
 
-    void PlayerMoveAndRotation()
+    public void StopMove()
     {
-        InputX = Input.GetAxis("Horizontal");
-        InputZ = Input.GetAxis("Vertical");
+        _isMove = false;
+    }
+
+    public void StartMove()
+    {
+        _isMove = true;
+    }
+
+    private void PlayerMoveAndRotation()
+    {
+        _inputX = Input.GetAxis("Horizontal");
+        _inputZ = Input.GetAxis("Vertical");
 
         var camera = Camera.main;
         var forward = _camera.transform.forward;
@@ -62,35 +72,36 @@ public class CharacterMover : MonoBehaviour
         forward.Normalize();
         right.Normalize();
 
-        desiredMoveDirection = forward * InputZ + right * InputX;
+        _desiredMoveDirection = forward * _inputZ + right * _inputX;
 
         if (blockRotationPlayer == false)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(desiredMoveDirection), desiredRotationSpeed);
-            controller.Move(desiredMoveDirection * Time.deltaTime * Velocity);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_desiredMoveDirection), _desiredRotationSpeed);
+            _controller.Move(_desiredMoveDirection * Time.deltaTime * velocity);
         }
     }
 
-    public void LookAt(Vector3 pos)
+    private void LookAt(Vector3 pos)
     {
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(pos), desiredRotationSpeed);
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(pos), _desiredRotationSpeed);
     }
 
-    void InputMagnitude()
+    private void InputMagnitude()
     {
-        InputX = Input.GetAxis("Horizontal");
-        InputZ = Input.GetAxis("Vertical");
+        _inputX = Input.GetAxis("Horizontal");
+        _inputZ = Input.GetAxis("Vertical");
 
-        Speed = new Vector2(InputX, InputZ).sqrMagnitude;
+        _speed = new Vector2(_inputX, _inputZ).sqrMagnitude;
 
-        if (Speed > allowPlayerRotation)
+        if (_speed > _allowPlayerRotation)
         {
-            _character.Blend(Speed);
+            _character.Blend(_speed);
             PlayerMoveAndRotation();
         }
-        else if (Speed < allowPlayerRotation)
+        else if (_speed < _allowPlayerRotation)
         {
-            _character.Blend(Speed);
+            _character.Blend(_speed);
         }
     }
+
 }

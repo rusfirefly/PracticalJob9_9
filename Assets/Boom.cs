@@ -42,7 +42,6 @@ public class Boom : MonoBehaviour
             {
                 Vector3 direction = enemy.transform.position - transform.position;
                 enemy.TakeDamage(direction * _power * (_radius - distance), Vector3.up);
-                //box.AddForce(direction.normalized * _power * (_radius - distance), ForceMode.Impulse);
             }
         }
     }

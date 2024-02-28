@@ -2,8 +2,11 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
+    [SerializeField] private float _force = 30f;
+    [SerializeField] private float _attackRange;
+    [SerializeField] private Transform _pointAttack;
+    [SerializeField] private LayerMask _targetMask;
     private bool _isAttack;
-    private float _force = 30f;
 
     private void OnEnable()
     {
@@ -19,28 +22,7 @@ public class Weapon : MonoBehaviour
     {
         if(_isAttack)
         {
-            Ray ray = new Ray(transform.position, transform.forward);
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-                Enemy enemy = hit.collider.GetComponentInParent<Enemy>();
-                if (enemy != null)
-                {
-                    Debug.DrawRay(transform.forward, Vector3.forward, Color.red, 20f);
-                    if (Vector3.Distance(transform.position, hit.transform.position) <= 2f)
-                    {
-                        Vector3 forceDirection = (hit.transform.position - transform.position).normalized;
-                        enemy.TakeDamage(forceDirection * _force, hit.transform.position);
-                    }
-                }
-            }
-            
-
-            /*Enemy enemy = other.GetComponentInParent<Enemy>();
-            if (enemy != null)
-            {
-                Vector3 forceDirection = (transform.position).normalized;
-                enemy.TakeDamage(forceDirection * _force, transform.position);
-            }*/
+            Attack();
             _isAttack = false;
         }
     }
@@ -48,5 +30,26 @@ public class Weapon : MonoBehaviour
     private void OnAttackEvent()
     {
         _isAttack = true;
+    }
+
+    private void Attack()
+    {
+        Collider[] hitEnemys = Physics.OverlapSphere(_pointAttack.position, _attackRange, _targetMask);
+        foreach(Collider enemy in hitEnemys)
+        {
+            Vector3 hitPoint = enemy.ClosestPoint(transform.position);
+            Enemy hitEnemy = enemy.GetComponentInParent<Enemy>();
+            if (hitEnemy != null)
+            {
+                Vector3 forceDirection = (hitPoint - _pointAttack.position).normalized;
+                hitEnemy.TakeDamage(forceDirection * _force, hitPoint);
+            }
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(_pointAttack.position, _attackRange);
     }
 }

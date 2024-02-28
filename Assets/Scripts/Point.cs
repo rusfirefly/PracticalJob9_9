@@ -7,23 +7,23 @@ public class Point
     private float _currentDistance;
     private float _maxDistance = 0.1f;
     private Random _randomPositionPoint;
-    private int _width;
-    private int _height;
+    private int _minPositionX;
+    private int _maxPositionZ;
 
     public Vector3 GetPoint => _point;
 
-    public Point(int width, int height)
+    public Point(int minPositionX, int maxPositionZ)
     {
-        _width = width;
-        _height = height;
+        _minPositionX = minPositionX;
+        _maxPositionZ = maxPositionZ;
         _randomPositionPoint = new Random();
         NewPoint();
     }
 
     public void NewPoint()
     {
-        float x = _randomPositionPoint.Next(_width, _height);
-        float z = _randomPositionPoint.Next(_width, _height);
+        float x = _randomPositionPoint.Next(_minPositionX, _maxPositionZ);
+        float z = _randomPositionPoint.Next(_minPositionX, _maxPositionZ);
         _point = new Vector3(x, 0, z);
     }
 

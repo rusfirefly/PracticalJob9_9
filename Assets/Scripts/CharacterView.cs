@@ -5,7 +5,6 @@ public class CharacterView : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
 
-
     private void OnValidate()
     {
         _animator = GetComponent<Animator>();

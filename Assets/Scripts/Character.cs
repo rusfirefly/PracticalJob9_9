@@ -6,13 +6,14 @@ public class Character : MonoBehaviour
 {
     public static event Action AttackEvent;
     [SerializeField] private CharacterView _charaterView;
-    [SerializeField] private Transform _hand;
-
-
 
     public void Attack()
     {
         _charaterView.Attack();
+    }
+
+    public void AttackStartEvent()
+    {
         AttackEvent?.Invoke();
     }
 

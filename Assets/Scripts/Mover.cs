@@ -12,10 +12,10 @@ public class Mover : MonoBehaviour
     private void Awake()
     {
         _direction = Vector3.forward;
-        _point = new Point(-10, 10);
+        _point = new Point(minPositionX: -10, maxPositionZ: 10);
         transform.LookAt(_point.GetPoint);
     }
-
+    
     private void Update()
     {
         if (_isRun == false)
@@ -31,7 +31,7 @@ public class Mover : MonoBehaviour
 
         transform.Translate(_direction * _speed * Time.deltaTime);
     }
-
+    
     public void Enable() => _isRun = true;
 
     public void Disable() => _isRun = false;
