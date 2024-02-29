@@ -27,9 +27,9 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    private void OnAttackEvent()
+    private void OnAttackEvent(bool isAttack)
     {
-        _isAttack = true;
+        _isAttack = isAttack;
     }
 
     private void Attack()

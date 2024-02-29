@@ -24,6 +24,7 @@ public class Enemy : MonoBehaviour
             _currentTime += Time.deltaTime;
             if (_currentTime >= _timeStartStandUp)
             {
+                _enemyView.ShowName();
                 StandUP();
                 _currentTime -= _timeStartStandUp;
                 _isDie = false;
@@ -44,6 +45,7 @@ public class Enemy : MonoBehaviour
     public void Kill()
     {
         StopRun();
+        
         _enemyView.DisableAnimator();
         _ragdollHandler.Enable();
         _isDie = true;
@@ -72,6 +74,7 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(Vector3 force, Vector3 hitPosition)
     {
+        _enemyView.HideName();
         _enemyView.DisableAnimator();
         _mover.Disable();
         _ragdollHandler.Enable();

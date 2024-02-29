@@ -1,11 +1,13 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Animator))]
 public class EnemyView : MonoBehaviour
 {
+
     public event Action StandUp;
-    
+    [SerializeField] private Text _name;
     private Animator _animator;
     private const string _isRuningKey= "IsRuning";
     private Transform _parent;
@@ -29,6 +31,9 @@ public class EnemyView : MonoBehaviour
 
     public void StopRuning() => _animator.SetBool(_isRuningKey, false);
 
+    public void ShowName() => _name.gameObject.SetActive(true);
+
+    public void HideName() => _name.gameObject.SetActive(false);
 
     public void NewPositionParent()
     {

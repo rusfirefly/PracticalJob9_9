@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    public static event Action AttackEvent;
+    public static event Action<bool> AttackEvent;
     [SerializeField] private CharacterView _charaterView;
 
     public void Attack()
@@ -14,12 +14,17 @@ public class Character : MonoBehaviour
 
     public void AttackStartEvent()
     {
-        AttackEvent?.Invoke();
+        AttackEvent?.Invoke(true);
     }
 
     public void StartRun()
     {
         _charaterView.Run();
+    }
+
+    public void StopAttack()
+    {
+        AttackEvent?.Invoke(false);
     }
 
     public void Blend(float speed)
