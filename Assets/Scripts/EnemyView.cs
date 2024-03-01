@@ -87,4 +87,16 @@ public class EnemyView : MonoBehaviour
            _parent.position = new Vector3(_parent.position.x, hit.point.y, _parent.position.z);
         }
     }
+
+    public float DistanceToGround()
+    {
+        Vector3 ground = _hipsBone.position;
+        ground.y = 0;
+        return Vector3.Distance(_hipsBone.position, ground);
+    }
+
+    public bool IsGround()
+    {
+        return DistanceToGround() < 0.3f;
+    }
 }

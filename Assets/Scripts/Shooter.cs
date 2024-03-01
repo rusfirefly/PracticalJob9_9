@@ -19,11 +19,19 @@ public class Shooter : MonoBehaviour
 
             if(Physics.Raycast(ray, out RaycastHit hit))
             {
+                Vector3 forceDirection;
                 Enemy enemy = hit.collider.GetComponentInParent<Enemy>();
                 if(enemy!=null)
                 {
-                    Vector3 forceDirection = (hit.transform.position - _camera.transform.position).normalized;
-                    enemy.TakeDamage(forceDirection * _force, hit.transform.position);
+                   forceDirection = (hit.transform.position - _camera.transform.position).normalized;
+                   enemy.TakeDamage(forceDirection * _force, hit.transform.position);
+                }
+
+                Ball ball = hit.collider.GetComponentInParent<Ball>();
+                if (ball)
+                {
+                    forceDirection = (hit.transform.position - _camera.transform.position).normalized;
+                    ball.TakeDamage(forceDirection * _force, hit.transform.position);
                 }
             }
         }

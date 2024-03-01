@@ -24,6 +24,19 @@ public class RagdollHandler : MonoBehaviour
             rigbody.isKinematic = true;
     }
 
+    public void OffGravity()
+    {
+        foreach (Rigidbody rigbody in _rigbodies)
+            rigbody.useGravity = false;
+    }
+
+    public void OnGravity()
+    {
+        foreach (Rigidbody rigbody in _rigbodies)
+            rigbody.useGravity = true;
+    }
+
+
     public void Hit(Vector3 force, Vector3 hitPosiotion)
     {
         Rigidbody injuredRiginbode = _rigbodies.OrderBy(rigbody => Vector3.Distance(rigbody.position, hitPosiotion)).First();

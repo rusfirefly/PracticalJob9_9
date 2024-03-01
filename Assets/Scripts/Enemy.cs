@@ -19,7 +19,8 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        if(_isDie)
+        bool isGround = _enemyView.IsGround();
+        if(_isDie && isGround)
         {
             _currentTime += Time.deltaTime;
             if (_currentTime >= _timeStartStandUp)
@@ -44,10 +45,12 @@ public class Enemy : MonoBehaviour
 
     public void Kill()
     {
-        StopRun();
-        
+        _enemyView.HideName();
         _enemyView.DisableAnimator();
+        _mover.Disable();
         _ragdollHandler.Enable();
+        _ragdollHandler.OffGravity();
+
         _isDie = true;
         _currentTime = 0;
     }

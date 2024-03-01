@@ -3,7 +3,7 @@ using UnityEngine;
 public class Mover : MonoBehaviour
 {
     [SerializeField, Range(0, 20)] private float _speed;
-    
+
     private Point _point;
     private bool _isRun;
 
@@ -15,7 +15,8 @@ public class Mover : MonoBehaviour
         _point = new Point(minPositionX: -10, maxPositionZ: 10);
         transform.LookAt(_point.GetPoint);
     }
-    
+
+
     private void Update()
     {
         if (_isRun == false)
@@ -36,4 +37,5 @@ public class Mover : MonoBehaviour
 
     public void Disable() => _isRun = false;
 
+    
 }
