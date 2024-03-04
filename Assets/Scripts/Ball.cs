@@ -4,7 +4,6 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     [SerializeField] private Rigidbody _ballRiginboddy;
-    [SerializeField] private LayerMask _targetMask;
     [SerializeField] private float _attackRange;
 
     private void OnValidate()
@@ -22,19 +21,5 @@ public class Ball : MonoBehaviour
     {
         _ballRiginboddy.AddForceAtPosition(force, hitPosition, ForceMode.Impulse);
     }
-
-    private void Attack()
-    {
-        Collider[] hitEnemys = Physics.OverlapSphere(transform.position, _attackRange, _targetMask);
-        foreach (Collider enemy in hitEnemys)
-        {
-            Vector3 hitPoint = enemy.ClosestPoint(transform.position);
-            Enemy hitEnemy = enemy.GetComponentInParent<Enemy>();
-            if (hitEnemy != null)
-            {
-                Vector3 forceDirection = (hitPoint - transform.position).normalized;
-                hitEnemy.TakeDamage(forceDirection * 100f, hitPoint);
-            }
-        }
-    }
+       
 }

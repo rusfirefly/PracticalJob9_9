@@ -30,7 +30,7 @@ public class Shooter : MonoBehaviour
                 Ball ball = hit.collider.GetComponentInParent<Ball>();
                 if (ball)
                 {
-                    forceDirection = (hit.transform.position - _camera.transform.position).normalized;
+                    forceDirection = Vector3.forward;// + (hit.transform.position - _camera.transform.position);//(hit.transform.position - _camera.transform.position).normalized;
                     ball.TakeDamage(forceDirection * _force, hit.transform.position);
                 }
             }

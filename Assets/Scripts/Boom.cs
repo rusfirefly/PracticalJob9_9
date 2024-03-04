@@ -19,6 +19,12 @@ public class Boom : MonoBehaviour
         }
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, _radius);
+    }
+
     private void Boooom()
     {
         Rigidbody[] boxs = FindObjectsOfType<Rigidbody>();
@@ -34,16 +40,15 @@ public class Boom : MonoBehaviour
     }
     private void Boooom2()
     {
-        Enemy[] enemys = FindObjectsOfType<Enemy>();
-        foreach (Enemy enemy in enemys)
+        Rigidbody[] enemys = FindObjectsOfType<Rigidbody>();
+        foreach (Rigidbody enemy in enemys)
         {
             float distance = Vector3.Distance(transform.position, enemy.transform.position);
             if (distance <= _radius)
             {
-                Vector3 direction = enemy.transform.position - transform.position;
-                enemy.TakeDamage(direction * _power * (_radius - distance), Vector3.up);
+                Vector3 direction = Vector3.up + (enemy.transform.position - transform.position);
+                enemy.AddForce(direction * _power * (_radius - distance), ForceMode.Impulse);
             }
         }
     }
-
 }

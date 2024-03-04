@@ -15,8 +15,7 @@ public class Mover : MonoBehaviour
         _point = new Point(minPositionX: -10, maxPositionZ: 10);
         transform.LookAt(_point.GetPoint);
     }
-
-
+    
     private void Update()
     {
         if (_isRun == false)
